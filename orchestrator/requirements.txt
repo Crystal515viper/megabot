@@ -1,0 +1,30 @@
+# Orchestrator requirements
+# Core dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Database
+asyncpg>=0.29.0
+sqlalchemy[asyncio]>=2.0.23
+alembic>=1.13.0
+
+# Redis
+redis>=5.0.0
+aioredis>=2.0.0
+
+# HTTP client for exchange API
+httpx>=0.25.0
+aiohttp>=3.9.0
+
+# Logging & Monitoring
+structlog>=23.2.0
+prometheus-client>=0.19.0
+
+# Utilities
+python-dotenv>=1.0.0
+tenacity>=8.2.0
+
+# TODO: Add exchange-specific SDK (e.g., ccxt, binance-connector)
+# ccxt>=4.0.0
