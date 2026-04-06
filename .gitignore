@@ -4,20 +4,27 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-venv/
 .venv/
+venv/
+env/
 .env
 .env.local
 .env.*
 
 # Build artifacts
-dist/
 build/
+dist/
 *.egg-info/
+
+# Database migrations
+alembic/versions/*.py
 
 # Logs
 *.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
 
 # Editors
 .vscode/
@@ -25,11 +32,7 @@ build/
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Coverage
+# Coverage reports
 .coverage
 coverage/
 htmlcov/
