@@ -1,0 +1,71 @@
+# Orchestrator Service Configuration
+# CONFIG_REF: All values can be overridden via environment variables
+
+service:
+  name: orchestrator
+  version: "1.0.0"
+  log_level: INFO
+
+# Redis Configuration
+redis:
+  url: redis://redis:6379
+  max_connections: 20
+  socket_timeout: 5.0
+  retry_on_timeout: true
+
+# Signal Processing Configuration
+signal_processing:
+  # Minimum price history length for analysis
+  min_history_length: 14
+  
+  # Volatility filter thresholds
+  volatility:
+    max_atr_percent: 5.0      # Reject if ATR% > this value
+    min_atr_percent: 0.1      # Reject if ATR% < this value (low volatility)
+    zscore_threshold: 2.5     # Z-score threshold for outlier detection
+    snr_threshold: 0.5        # Minimum Signal-to-Noise Ratio
+  
+  # Leverage calculation parameters
+  leverage:
+    default_risk_roi: 0.02    # 2% risk per trade
+    default_k_factor: 1.5     # Safety coefficient
+    max_leverage: 20.0        # Maximum allowed leverage
+    min_leverage: 1.0         # Minimum allowed leverage
+
+# Circuit Breaker Configuration
+circuit_breaker:
+  timeout_seconds: 10.0       # Bot considered unhealthy after this time without heartbeat
+  check_interval_seconds: 5.0 # How often to check bot health
+
+# Retry Configuration
+retry:
+  ttl_seconds: 300            # TTL for retry queue messages (5 minutes)
+  max_retries: 3              # Maximum retry attempts per signal
+
+# Queue Names
+queues:
+  signals_long: queue:signals_long
+  signals_short: queue:signals_short
+  retry: queue:retry
+
+# Database Configuration (via env vars primarily)
+database:
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+
+# API Configuration
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  # Rate limiting (requests per minute per IP)
+  rate_limit: 100
+  
+# Security
+security:
+  # TODO: Add API key validation
+  # TODO: Add JWT token support
+  allowed_origins:
+    - "*"  # CONFIG_REF: Restrict in production

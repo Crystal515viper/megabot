@@ -5,5 +5,11 @@ fastapi==0.105.0
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
+# Redis (async)
+redis==5.0.1
+
+# Configuration
+pyyaml==6.0.1
+
 # Rate Limiting
 slowapi==0.1.7

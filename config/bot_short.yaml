@@ -1,0 +1,61 @@
+# Bot Short Configuration
+# This file documents the configuration options for the Short Trading Bot
+
+bot:
+  name: "bot-short"
+  side: "SHORT"
+  queue: "queue:signals_short"
+  heartbeat_key: "bot:short:heartbeat"
+  heartbeat_interval: 3  # seconds
+
+exchange:
+  id: "binance"  # ccxt exchange ID
+  sandbox: true  # Use testnet
+  paper_trading: true  # Simulate orders without real money
+  
+  # API credentials (should be loaded from .env in production)
+  # api_key: ${SHORT_BOT_API_KEY}
+  # api_secret: ${SHORT_BOT_API_SECRET}
+
+trading:
+  max_retries: 3
+  retry_base_delay: 1.0  # seconds (exponential backoff)
+  slippage_tolerance: 0.001  # 0.1%
+  
+  # Position management
+  default_leverage_min: 1
+  default_leverage_max: 20
+  
+redis:
+  url: "redis://redis:6379"
+  queue_timeout: 5  # BLPOP timeout in seconds
+
+logging:
+  level: "INFO"
+  format: "json"  # json or text
+  output: "stdout"
+
+# State Machine Documentation
+# --------------------------
+# INIT         → Bot received signal, calculating parameters
+# PENDING_FILL → Order placed, waiting for fill
+# ACTIVE       → Order filled, position open
+# TRAILING     → Trailing stop active, monitoring price
+# CLOSING      → Closing position (SL hit or manual close)
+# CLOSED       → Position closed, updating DB
+# ERROR        → Error occurred, manual intervention may be needed
+
+# Error Handling
+# --------------
+# - Order not filled: Retry up to 3 times with exponential backoff
+# - Exchange disconnect: Reconnect automatically
+# - Redis disconnect: Reconnect with retry
+# - SL hit: Close position immediately at market
+# - Partial fill: Cancel remaining, recalculate position
+
+# Security Notes
+# --------------
+# - API keys must have IP whitelist enabled on exchange
+# - Only enable Futures trading permissions
+# - Never commit .env files with real keys
+# - Use sandbox/testnet for development
