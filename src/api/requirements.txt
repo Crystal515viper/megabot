@@ -1,0 +1,13 @@
+-r ../../requirements-common.txt
+
+# Web Framework
+fastapi==0.105.0
+uvicorn[standard]==0.24.0
+
+# Caching & Streaming
+aioredis==2.0.1
+sse-starlette==1.8.2  # SSE поддержка для FastAPI
+
+# Auth (заглушка на будущее)
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4

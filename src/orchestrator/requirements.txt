@@ -1,0 +1,9 @@
+-r ../../requirements-common.txt
+
+# Web Framework
+fastapi==0.105.0
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Rate Limiting
+slowapi==0.1.7
