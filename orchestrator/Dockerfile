@@ -2,28 +2,23 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Установка системных зависимостей (если нужны для numpy/ta-lib)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libpq-dev \
-    curl \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+# Копирование требований
+COPY requirements-common.txt .
+COPY src/orchestrator/requirements.txt ./requirements.txt
 
-# Install Python dependencies
+# Установка зависимостей
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY . .
+# Копирование кода
+COPY src/db ./src/db
+COPY src/risk ./src/risk
+COPY src/core ./src/core
+COPY src/orchestrator ./src/orchestrator
+COPY config ./config
 
-# Expose port (will be overridden by docker-compose)
-EXPOSE 8001
-
-# Health check command
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import socket; s=socket.socket(); s.connect(('localhost', 8001)); s.close()" || exit 1
-
-# TODO: Replace with actual application entry point
-CMD ["python", "app.py"]
+CMD ["uvicorn", "src.orchestrator.main:app", "--host", "0.0.0.0", "--port", "8000"]
