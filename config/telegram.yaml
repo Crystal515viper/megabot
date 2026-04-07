@@ -1,0 +1,24 @@
+# Telegram Bot Configuration
+
+# Notification Flags
+# Set to True/False to enable/disable specific notification types
+NOTIFY_ON_SIGNAL: true       # Notify when a new signal is accepted
+NOTIFY_ON_ORDER: true        # Notify when an order is executed
+NOTIFY_ON_TRAILING: true     # Notify when trailing stop is activated
+NOTIFY_ON_SL: true           # Notify when stop-loss is triggered
+NOTIFY_ON_ERROR: true        # Always notify on errors (cannot be disabled)
+
+# Rate Limiting
+# Messages per second limit (Telegram allows 30 msg/sec)
+RATE_LIMIT: 25               # Using 25 to be safe
+
+# Message Settings
+USE_MARKDOWN_V2: true        # Use Markdown V2 formatting
+FALLBACK_TO_PLAIN_TEXT: true # Fallback to plain text if markdown fails
+
+# Retry Settings
+MAX_RETRIES: 3               # Maximum retry attempts for failed messages
+RETRY_BACKOFF_BASE: 0.5      # Base delay for exponential backoff (seconds)
+
+# Health Check
+HEARTBEAT_INTERVAL: 60       # Send heartbeat to Redis every N seconds
