@@ -1,0 +1,68 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'megabot-monitor'
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Orchestrator metrics
+  - job_name: 'orchestrator'
+    static_configs:
+      - targets: ['orchestrator:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # API Gateway metrics
+  - job_name: 'api_gateway'
+    static_configs:
+      - targets: ['api_gateway:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Bot Long metrics (if exposed)
+  - job_name: 'bot_long'
+    static_configs:
+      - targets: ['bot_long:8002']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Bot Short metrics (if exposed)
+  - job_name: 'bot_short'
+    static_configs:
+      - targets: ['bot_short:8003']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # PostgreSQL exporter (requires postgres-exporter service)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    scrape_interval: 30s
+
+  # Redis exporter (requires redis-exporter service)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    scrape_interval: 30s
+
+  # Node exporter for system metrics (optional)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 30s
+
+# Alerting rules (optional, requires alertmanager)
+# rule_files:
+#   - "alerts/*.yml"
+
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
